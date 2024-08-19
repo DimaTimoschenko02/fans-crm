@@ -5,25 +5,23 @@ import { SequelizeModuleOptions } from '@nestjs/sequelize';
 
 @Injectable()
 export class SqlConfigService {
-  private readonly connectionLink: string;
   private readonly mysqlConnectionOptions: Partial<SequelizeModuleOptions>; //SequelizeModuleOptions
 
   constructor(configService: ConfigService) {
-    this.connectionLink = configService.get<string>('MYSQL_URL');
-    console.log(this.connectionLink);
     this.mysqlConnectionOptions = {
       dialect: 'mysql',
-      password: 'root',
-      database: 'users',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      // uri: this.connectionLink,
+      password: configService.get<string>('MYSQL_PASSWORD'),
+      database: configService.get<string>('MYSQL_DATABASE'),
+      host: configService.get<string>('MYSQL_HOST'),
+      port: configService.get<number>('MYSQL_PORT'),
+      username: configService.get<string>('MYSQL_USERNAME'),
       models: [User],
       synchronize: true,
       autoLoadModels: true,
       logging: true,
     };
+
+    console.log(this.mysqlConnectionOptions);
   }
 
   public async getConnectionOptions(): Promise<any> {
