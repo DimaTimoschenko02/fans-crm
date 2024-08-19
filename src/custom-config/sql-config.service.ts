@@ -20,8 +20,6 @@ export class SqlConfigService {
       autoLoadModels: true,
       logging: true,
     };
-
-    console.log(this.mysqlConnectionOptions);
   }
 
   public async getConnectionOptions(): Promise<any> {
